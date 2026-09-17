@@ -17,7 +17,7 @@ CHANGE_FILE_LIST=(
 # Ensure we are not running from within the vllm directory if SCRIPT_PATH_PARAM is relative like "."
 if [ "$TOOLS_DIR" = "$VLLM_DIR" ]; then
     echo "Error: This script should not be run from the vllm directory directly if using relative paths."
-    echo "Place it in a subdirectory like 'tools/vllm-tpu' and run it from the repository root or via its full path."
+    echo "Place it in a subdirectory like 'tools/vllm-jaxtpu' and run it from the repository root or via its full path."
     exit 1
 fi
 
@@ -33,12 +33,12 @@ fi
 PYPROJECT_FILE="$VLLM_DIR/pyproject.toml"
 
 # Backup and update the project name.
-if ! grep -q "name = \"vllm-tpu\"" "$PYPROJECT_FILE"; then
-    echo "Patching pyproject.toml project name to vllm-tpu..."
+if ! grep -q "name = \"vllm-jaxtpu\"" "$PYPROJECT_FILE"; then
+    echo "Patching pyproject.toml project name to vllm-jaxtpu..."
     cp "$PYPROJECT_FILE" "${PYPROJECT_FILE}.bak"
-    sed -i '0,/^name = "vllm"/s//name = "vllm-tpu"/' "$PYPROJECT_FILE"
+    sed -i '0,/^name = "vllm"/s//name = "vllm-jaxtpu"/' "$PYPROJECT_FILE"
 
-    echo "Patching ${CHANGE_FILE_LIST[*]} vllm to vllm-tpu..."
+    echo "Patching ${CHANGE_FILE_LIST[*]} vllm to vllm-jaxtpu..."
     # patching
     #   importlib.metadata.version('vllm') -> importlib.metadata.version('vllm-tpu')
     #   importlib.metadata.version("vllm") -> importlib.metadata.version("vllm-tpu")
@@ -47,9 +47,9 @@ if ! grep -q "name = \"vllm-tpu\"" "$PYPROJECT_FILE"; then
     #   version('vllm') -> version('vllm-tpu')
     #   version("vllm") -> version("vllm-tpu")
     sed -i \
-        -e "s/importlib.metadata.version(\(['\"]\)vllm\1)/importlib.metadata.version(\1vllm-tpu\1)/" \
-        -e "s/importlib.metadata.metadata(\(['\"]\)vllm\1)/importlib.metadata.metadata(\1vllm-tpu\1)/" \
-        -e "s/version(\(['\"]\)vllm\1)/version(\1vllm-tpu\1)/" \
+        -e "s/importlib.metadata.version(\(['\"]\)vllm\1)/importlib.metadata.version(\1vllm-jaxtpu\1)/" \
+        -e "s/importlib.metadata.metadata(\(['\"]\)vllm\1)/importlib.metadata.metadata(\1vllm-jaxtpu\1)/" \
+        -e "s/version(\(['\"]\)vllm\1)/version(\1vllm-jaxtpu\1)/" \
         "${CHANGE_FILE_LIST[@]}"
     PATCHED=true
 else
@@ -69,9 +69,9 @@ cleanup() {
 
         echo "Restoring vllm code..."
         sed -i \
-            -e "s/importlib.metadata.version(\(['\"]\)vllm-tpu\1)/importlib.metadata.version(\1vllm\1)/" \
-            -e "s/importlib.metadata.metadata(\(['\"]\)vllm-tpu\1)/importlib.metadata.metadata(\1vllm\1)/" \
-            -e "s/version(\(['\"]\)vllm-tpu\1)/version(\1vllm\1)/" \
+            -e "s/importlib.metadata.version(\(['\"]\)vllm-jaxtpu\1)/importlib.metadata.version(\1vllm\1)/" \
+            -e "s/importlib.metadata.metadata(\(['\"]\)vllm-jaxtpu\1)/importlib.metadata.metadata(\1vllm\1)/" \
+            -e "s/version(\(['\"]\)vllm-jaxtpu\1)/version(\1vllm\1)/" \
             "${CHANGE_FILE_LIST[@]}"
     fi
 }
