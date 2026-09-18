@@ -12,5 +12,5 @@ ray[data]
 setuptools==78.1.0
 setuptools-rust>=1.9.0
 nixl==0.3.0
-vllm-jaxtpu-core @ file:../../tpu-inference/dist/vllm_jaxtpu_core-0.29.0rc5-py3-none-any.whl
-#tpu-inference==0.29.0
+#vllm-jaxtpu-core @ file:../../tpu-inference/dist/vllm_jaxtpu_core-0.29.0rc5-py3-none-any.whl
+tpu-inference==0.29.0
